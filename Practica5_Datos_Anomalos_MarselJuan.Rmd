@@ -222,7 +222,7 @@ reglapercentil<-function(x){
 Utiliza la función `mutate` y `across` para identificar los outliers en la variable `Petal.Length` con todos los métodos de detección de outliers implementados. Genera una columna nueva para cada método. Nota: podría extenderse la aplicación a todas las variables numéricas usando también `mutate`, `across` y `where`.
 
 ```{r Solucion ejercicio 6, include=TRUE, echo=TRUE, eval=TRUE, results=TRUE}
-dirty_iris<-dirty_iris%>%mutate(sigma3=reglasigma(Petal.Length),hampel=reglahampel(Petal.Length),boxplot=reglaboxplot(Petal.Length),percentil=reglapercentil(Petal.Length))
+dirty_iris<-dirty_iris%>%mutate(across(Petal.Length,~reglasigma(.x),.names="sigma3"),across(Petal.Length,~reglahampel(.x),.names = "hampel"),across(Petal.Length, ~reglaboxplot(.x),.names = "boxplot"),across(Petal.Length, ~reglapercentil(.x), .names = "percentil"))
 
 
 ```
