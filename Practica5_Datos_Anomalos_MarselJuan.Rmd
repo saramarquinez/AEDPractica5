@@ -177,47 +177,42 @@ Escribe una función que detecte los outliers de un vector $x$ para cada uno de 
 ```{r , include = FALSE}
 # Regla 3 sigma
 reglasigma<-function(x){
-  media<-mean(x,rm.na=TRUE)
+  media<-mean(x,na.rm=TRUE)
   dt<-sd(x,na.rm=TRUE) 
-  upLim<-Media+3*dt
-  lowLim<-Media-3*dt
-  maxNom<-max(x[which(x<upLim)]) 
-  minNom<-min(x[which(x>lowLim)]) 
-  nOut<-sum(x<lowLim | x>upLim)
+  upLim<-media+3*dt
+  lowLim<-media-3*dt
+   x < lowLim | x > upLim
 }
 
 # Identificador Hampel
 reglahampel<-function(x){
-  mediana<-median(x,rm.na=TRUE)
+  mediana<-median(x,na.rm=TRUE)
   madm2<-madm(x)
   upLim<-mediana+3*madm2
   lowLim<-mediana-3*madm2
-  maxNom<-max(x[which(x<upLim)]) 
-  minNom<-min(x[which(x>lowLim)]) 
-  nOut<-sum(x<lowLim | x>upLim)
+ 
+  x < lowLim | x > upLim
 }
 
 
 # Regla boxplot
 reglaboxplot<-function(x){
-  xs<-quantile(x,75)
-  xi<-quantile(x,25)
-  upLim<-xs+1.5*IQR(x)
-  lowLim<-xi-1.5*IQR(x)
-  maxNom<-max(x[which(x<upLim)]) 
-  minNom<-min(x[which(x>lowLim)]) 
-  nOut<-sum(x<lowLim | x>upLim)
+  xs<-quantile(x,0.75,na.rm=TRUE)
+  xi<-quantile(x,0.25,na.rm=TRUE)
+  upLim<-xs+1.5*IQR(x,na.rm=TRUE)
+  lowLim<-xi-1.5*IQR(x,na.rm=TRUE)
+
+  x < lowLim | x > upLim
 }
 
 # Percentiles
 reglapercentil<-function(x){
-  q95<-quantile(x,95)
-  q5<-quantile(x,5)
+  q95<-quantile(x,0.95,na.rm=TRUE)
+  q5<-quantile(x,0.5,na.rm=TRUE)
   upLim<-x>q95
   lowLim<-x<q5
-  maxNom<-max(x[which(x<upLim)]) 
-  minNom<-min(x[which(x>lowLim)]) 
-  nOut<-sum(x<lowLim | x>upLim)
+
+  x < lowLim | x > upLim
   
 }
 ```
@@ -227,7 +222,7 @@ reglapercentil<-function(x){
 Utiliza la función `mutate` y `across` para identificar los outliers en la variable `Petal.Length` con todos los métodos de detección de outliers implementados. Genera una columna nueva para cada método. Nota: podría extenderse la aplicación a todas las variables numéricas usando también `mutate`, `across` y `where`.
 
 ```{r Solucion ejercicio 6, include=TRUE, echo=TRUE, eval=TRUE, results=TRUE}
-
+dirty_iris<-dirty_iris%>%mutate(sigma3=reglasigma(Petal.Length),hampel=reglahampel(Petal.Length),boxplot=reglaboxplot(Petal.Length),percentil=reglapercentil(Petal.Length))
 
 
 ```
