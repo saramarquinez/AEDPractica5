@@ -123,6 +123,11 @@ dirty_iris<-dirty_iris%>%mutate(across(where(is.numeric),~ifelse(!is.finite(.x)|
 
 ```{r Solucion ejercicio 3, include=TRUE, echo=TRUE, eval=TRUE, results=TRUE}
 
+ok<-sum(complete.cases(dirty_iris))
+ratio<-ok/nrow(dirty_iris)
+
+clean_iris<-na.omit(dirty_iris)
+
 ```
 
 # Detección de outliers univariante
