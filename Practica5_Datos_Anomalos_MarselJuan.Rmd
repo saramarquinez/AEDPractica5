@@ -148,7 +148,19 @@ Empleado la función `summarise y across`, calcula la media, la desviación típ
 
 ```{r , include = TRUE}
 
+madm<-function(x){
+  1.4826*median(abs(x-median(x,na.rm=TRUE)),na.rm=TRUE)
+}
+
+dirty<-dirty_iris%>%summarise(across(Petal.Length,list(media=~mean(.x,na.rm=TRUE),sd=~sd(.x,na.rm=TRUE),mediana=~median(.x,na.rm=TRUE),madm=~madm(.x),IQR=~IQR(.x,na.rm=TRUE))))
+
+clean<-clean_iris%>%summarise(across(Petal.Length,list(media=~mean(.x,na.rm=TRUE),sd=~sd(.x,na.rm=TRUE),mediana=~median(.x,na.rm=TRUE),madm=~madm(.x),IQR=~IQR(.x,na.rm=TRUE))))
+
+dirty
+clean
 ```
+
+Vemos que los únicos valores que cambian son la media, la desviación estandar y el IQR que cambia pero minimamente, mientras que la desviación estandar del dirty es de casi el doble que la del clean.
 
 ## Ejercicio 5: Métodos de detección de outliers
 
