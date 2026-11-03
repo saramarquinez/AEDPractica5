@@ -182,6 +182,7 @@ reglasigma<-function(x){
   upLim<-media+3*dt
   lowLim<-media-3*dt
    x < lowLim | x > upLim
+   ifelse(is.na(x), FALSE, x < lowLim | x > upLim)
 }
 
 # Identificador Hampel
@@ -192,6 +193,7 @@ reglahampel<-function(x){
   lowLim<-mediana-3*madm2
  
   x < lowLim | x > upLim
+  ifelse(is.na(x), FALSE, x < lowLim | x > upLim)
 }
 
 
@@ -203,16 +205,18 @@ reglaboxplot<-function(x){
   lowLim<-xi-1.5*IQR(x,na.rm=TRUE)
 
   x < lowLim | x > upLim
+  ifelse(is.na(x), FALSE, x < lowLim | x > upLim)
 }
 
 # Percentiles
 reglapercentil<-function(x){
   q95<-quantile(x,0.95,na.rm=TRUE)
-  q5<-quantile(x,0.5,na.rm=TRUE)
-  upLim<-x>q95
-  lowLim<-x<q5
+  q5<-quantile(x,0.05,na.rm=TRUE)
+  upLim<-q95
+  lowLim<-q5
 
   x < lowLim | x > upLim
+  ifelse(is.na(x), FALSE, x < lowLim | x > upLim)
   
 }
 ```
@@ -235,6 +239,13 @@ En los métodos de detección de outliers analizados, examina los resultados com
 - Los valores etiquetados como outliers (ordenados de menor a mayor).
 
 ```{r Solucion ejercicio 7, include=TRUE, echo=TRUE, eval=TRUE, results=TRUE}
+
+deteccion<-c()
+for (i in 6:9){
+  deteccion[i-5]<-sum(dirty_iris[i])
+  deteccion
+}
+
 
 ```
 
