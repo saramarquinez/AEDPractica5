@@ -176,17 +176,50 @@ Escribe una función que detecte los outliers de un vector $x$ para cada uno de 
 
 ```{r , include = FALSE}
 # Regla 3 sigma
-
+reglasigma<-function(x){
+  media<-mean(x,rm.na=TRUE)
+  dt<-sd(x,na.rm=TRUE) 
+  upLim<-Media+3*dt
+  lowLim<-Media-3*dt
+  maxNom<-max(x[which(x<upLim)]) 
+  minNom<-min(x[which(x>lowLim)]) 
+  nOut<-sum(x<lowLim | x>upLim)
+}
 
 # Identificador Hampel
-
+reglahampel<-function(x){
+  mediana<-median(x,rm.na=TRUE)
+  madm2<-madm(x)
+  upLim<-mediana+3*madm2
+  lowLim<-mediana-3*madm2
+  maxNom<-max(x[which(x<upLim)]) 
+  minNom<-min(x[which(x>lowLim)]) 
+  nOut<-sum(x<lowLim | x>upLim)
+}
 
 
 # Regla boxplot
-
+reglaboxplot<-function(x){
+  xs<-quantile(x,75)
+  xi<-quantile(x,25)
+  upLim<-xs+1.5*IQR(x)
+  lowLim<-xi-1.5*IQR(x)
+  maxNom<-max(x[which(x<upLim)]) 
+  minNom<-min(x[which(x>lowLim)]) 
+  nOut<-sum(x<lowLim | x>upLim)
+}
 
 # Percentiles
-
+reglapercentil<-function(x){
+  q95<-quantile(x,95)
+  q5<-quantile(x,5)
+  upLim<-x>q95
+  lowLim<-x<q5
+  maxNom<-max(x[which(x<upLim)]) 
+  minNom<-min(x[which(x>lowLim)]) 
+  nOut<-sum(x<lowLim | x>upLim)
+  
+}
 ```
 
 ## Ejercicio 6: Detección de outliers
