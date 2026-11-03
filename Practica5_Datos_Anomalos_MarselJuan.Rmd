@@ -2,15 +2,15 @@
 title: "Práctica 5. Datos Anómalos"
 subtitle: "Análisis Exploratorio de Datos, Máster en Ciencia de Datos - UV"
 output:
+  pdf_document:
+    toc: yes
+    toc_depth: 3
+    number_sections: no
   html_document:
     echo: yes
     number_sections: no
     theme: lumen
     toc: yes
-  pdf_document:
-    toc: yes
-    toc_depth: 3
-    number_sections: no
 ---
 
 ```{r setup, cache = F, echo = F, message = F, warning = F, tidy = F}
@@ -111,6 +111,8 @@ Reemplaza, en todas las columnas numéricas del data frame `dirty_iris`, los val
 ```{r Solucion ejercicio 2, include=TRUE, echo=TRUE, eval=TRUE, results=TRUE}
 # DEBEMOS ELIMINAR TAMBIEN LOS VALROES IGUALES A CERO YA QUE SE TRATA DE LONGITUDES DE PARTES DE UNA FLOR. NO PUEDEN SER O
 
+
+dirty_iris<-dirty_iris%>%mutate(across(where(is.numeric),~ifelse(!is.finite(.x)|.x<=0,NA,.x)))
 
 ```
 
